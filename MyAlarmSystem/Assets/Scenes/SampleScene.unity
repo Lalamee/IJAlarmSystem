@@ -1396,6 +1396,7 @@ GameObject:
   - component: {fileID: 1739278224}
   - component: {fileID: 1739278226}
   - component: {fileID: 1739278228}
+  - component: {fileID: 1739278229}
   - component: {fileID: 1739278227}
   m_Layer: 0
   m_Name: InnerHouse
@@ -1848,6 +1849,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _alarm: {fileID: 1739278227}
+--- !u!114 &1739278229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1739278222}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28be65a0b81bed444b13bc452071152f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1977551749
 GameObject:
   m_ObjectHideFlags: 0

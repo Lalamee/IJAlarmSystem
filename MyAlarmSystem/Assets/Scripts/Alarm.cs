@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -6,24 +7,23 @@ public class Alarm : MonoBehaviour
     [SerializeField] private AudioSource _alarm;
     
     private float _changeVolume = 0.5f;
-
-    private void OnTriggerEnter2D(Collider2D collision)
+    private House _house;
+    
+    private void OnHouseInfiltrated()
     {
-        if (collision.TryGetComponent<Player>(out Player player))
+        if (_house.IsInfiltrated)
         {
+            StopCoroutine(DownVolume());
             StartCoroutine(UpVolume());
         }
-    }
-    
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.TryGetComponent<Player>(out Player player))
+        else
         {
+            StopCoroutine(UpVolume());
             StartCoroutine(DownVolume());
         }
     }
     
-    public IEnumerator UpVolume()
+    private IEnumerator UpVolume()
     {
         _alarm.Play();
         
@@ -32,11 +32,9 @@ public class Alarm : MonoBehaviour
             _alarm.volume =  i;
             yield return null;
         }
-        
-        StopCoroutine(UpVolume());
     }
-    
-    public IEnumerator DownVolume()
+
+    private IEnumerator DownVolume()
     {
         for (float i = _alarm.volume; i > 0; i -= _changeVolume * Time.deltaTime)
         {
@@ -45,6 +43,5 @@ public class Alarm : MonoBehaviour
         }
         
         _alarm.Stop();
-        StopCoroutine(DownVolume());
     }
 }
