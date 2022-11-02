@@ -5,13 +5,18 @@ using UnityEngine;
 public class Alarm : MonoBehaviour
 {
     [SerializeField] private AudioSource _alarm;
+    [SerializeField] private House _house;
     
     private float _changeVolumeValue = 0.5f;
-    private House _house;
+
+    public void Start()
+    {
+        Debug.Log("23131");
+    }
 
     public void OnOffVolume()
     {
-        StartCoroutine(ChangeVolume());
+        var coroutina = StartCoroutine(ChangeVolume());
     }
 
     private IEnumerator ChangeVolume()
