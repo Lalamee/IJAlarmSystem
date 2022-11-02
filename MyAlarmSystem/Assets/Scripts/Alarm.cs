@@ -1,63 +1,39 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
 public class Alarm : MonoBehaviour
 {
     [SerializeField] private AudioSource _alarm;
-    [SerializeField] private House _house;
+
+    private float _upVolumeValue = 0.5f;
+    private float _downVolumeValue = 1.8f;
+    private float _maxVolume = 1.0f;
+    private float _minVolume = 0.0f;
     
-    private float _changeVolumeValue = 0.5f;
-
-    public void Start()
+    public void OnOffVolume(bool IsInfiltrated)
     {
-        Debug.Log("23131");
+        if (IsInfiltrated)
+            _alarm.Play();
+        
+        StartCoroutine(ChangeVolume(IsInfiltrated));
     }
 
-    public void OnOffVolume()
+    private IEnumerator ChangeVolume(bool IsInfiltrated)
     {
-        var coroutina = StartCoroutine(ChangeVolume());
-    }
-
-    private IEnumerator ChangeVolume()
-    {
-        while (_alarm.volume < 1 || _alarm.volume > 0)
+        while (_alarm.volume < _maxVolume || _alarm.volume > _minVolume)
         {
-            if (_house.IsInfiltrated)
+            if (IsInfiltrated)
             {
-                _alarm.volume += _changeVolumeValue * Time.deltaTime;
-
-                if (_alarm.volume == 1)
-                {
-                    StopCoroutine(ChangeVolume());
-                }
+                _alarm.volume += _upVolumeValue * Time.deltaTime;
             }
             else
             {
-                _alarm.volume -= _changeVolumeValue * Time.deltaTime;
-                
-                if (_alarm.volume == 0)
-                {
-                    _alarm.Stop();
-                    StopCoroutine(ChangeVolume());
-                }
+                _alarm.volume -= _downVolumeValue * Time.deltaTime;
             }
-        }
-        for (float i = _alarm.volume; i < 1; i += _changeVolumeValue * Time.deltaTime)
-        {   
-            _alarm.volume =  i;
-            yield return null;
-        }
-    }
-
-    private IEnumerator DownVolume()
-    {
-        for (float i = _alarm.volume; i > 0; i -= _changeVolumeValue * Time.deltaTime)
-        {
-            _alarm.volume =  i;
+            
             yield return null;
         }
         
-        _alarm.Stop();
+        StopCoroutine(ChangeVolume(IsInfiltrated));
     }
 }
