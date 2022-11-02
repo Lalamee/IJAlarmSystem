@@ -6,7 +6,7 @@ public class Alarm : MonoBehaviour
     [SerializeField] private AudioSource _alarm;
 
     private float _upVolumeValue = 0.5f;
-    private float _downVolumeValue = 1.8f;
+    private float _downVolumeValue = 1.0f;
     private float _maxVolume = 1.0f;
     private float _minVolume = 0.0f;
     
