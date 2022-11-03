@@ -22,33 +22,16 @@ public class Alarm : MonoBehaviour
 
     private IEnumerator ChangeVolume()
     {
-        while (_alarm.volume < _maxVolume)
+        while (_alarm.volume < _maxVolume || _alarm.volume > _minVolume)
         {
             if (_house.IsInfiltrated)
-            {
                 _alarm.volume += _upVolumeValue * Time.deltaTime;
-
-                if (_alarm.volume == _maxVolume)
-                    StopCoroutine(ChangeVolume());
-            }
-
-            yield return null;
-        }
-
-        while (_alarm.volume > _minVolume)
-        {
-            if (_house.IsInfiltrated == false)
-            {
+            else
                 _alarm.volume -= _downVolumeValue * Time.deltaTime;
 
-                if (_alarm.volume == _minVolume)
-                {
-                    _alarm.Stop();
-                    StopCoroutine(ChangeVolume());
-                }
-            }
-            
             yield return null;
         }
+        
+        StopCoroutine(ChangeVolume());
     }
 }
