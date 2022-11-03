@@ -1,8 +1,10 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class House : MonoBehaviour
 {
-    [SerializeField] private Alarm _alarm;
+    [SerializeField] private UnityEvent _infiltrated;
+    
     public bool IsInfiltrated { get; private set; }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -10,7 +12,7 @@ public class House : MonoBehaviour
         if (collision.TryGetComponent<Player>(out Player player))
         {
             IsInfiltrated = true;
-            _alarm.OnOffVolume(IsInfiltrated);
+            _infiltrated?.Invoke();
         }
     }
 
@@ -19,7 +21,7 @@ public class House : MonoBehaviour
         if (collision.TryGetComponent<Player>(out Player player))
         {
             IsInfiltrated = false;
-            _alarm.OnOffVolume(IsInfiltrated);
+            _infiltrated?.Invoke();
         }
     }
 }

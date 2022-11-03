@@ -1,28 +1,31 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Alarm : MonoBehaviour
 {
     [SerializeField] private AudioSource _alarm;
+    [SerializeField] private House _house;
 
     private float _upVolumeValue = 0.5f;
-    private float _downVolumeValue = 1.0f;
+    private float _downVolumeValue = 0.25f;
     private float _maxVolume = 1.0f;
     private float _minVolume = 0.0f;
     
-    public void OnOffVolume(bool IsInfiltrated)
+    
+    public void OnOffVolume()
     {
-        if (IsInfiltrated)
+        if (_house.IsInfiltrated)
             _alarm.Play();
         
-        StartCoroutine(ChangeVolume(IsInfiltrated));
+        StartCoroutine(ChangeVolume());
     }
 
-    private IEnumerator ChangeVolume(bool IsInfiltrated)
+    private IEnumerator ChangeVolume()
     {
         while (_alarm.volume < _maxVolume || _alarm.volume > _minVolume)
         {
-            if (IsInfiltrated)
+            if (_house.IsInfiltrated)
             {
                 _alarm.volume += _upVolumeValue * Time.deltaTime;
             }
@@ -34,6 +37,6 @@ public class Alarm : MonoBehaviour
             yield return null;
         }
         
-        StopCoroutine(ChangeVolume(IsInfiltrated));
+        StopCoroutine(ChangeVolume());
     }
 }
