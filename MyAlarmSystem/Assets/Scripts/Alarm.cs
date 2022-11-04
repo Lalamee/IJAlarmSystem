@@ -7,31 +7,41 @@ public class Alarm : MonoBehaviour
     [SerializeField] private AudioSource _alarm;
     [SerializeField] private House _house;
 
-    private float _upVolumeValue = 0.5f;
-    private float _downVolumeValue = 0.25f;
+    private Coroutine _changeVolumeAlarm;
+    private float _changeVolumeValue = 0.5f;
     private float _maxVolume = 1.0f;
     private float _minVolume = 0.0f;
 
     public void OnOffVolume()
     {
-        if (_house.IsInfiltrated)
-            _alarm.Play();
+        if (_changeVolumeAlarm != null)
+        {
+            StopCoroutine(_changeVolumeAlarm);
+        }
         
-        StartCoroutine(ChangeVolume());
+        if (_house.IsInfiltrated)
+        {
+            _alarm.Play();
+            _changeVolumeAlarm = StartCoroutine(ChangeVolume(_maxVolume));
+        }
+        else
+        {
+            _changeVolumeAlarm = StartCoroutine(ChangeVolume(_minVolume));
+        }
     }
 
-    private IEnumerator ChangeVolume()
+    private IEnumerator ChangeVolume(float target)
     {
-        while (_alarm.volume < _maxVolume || _alarm.volume > _minVolume)
+        while (_alarm.volume != target)
         {
-            if (_house.IsInfiltrated)
-                _alarm.volume += _upVolumeValue * Time.deltaTime;
-            else
-                _alarm.volume -= _downVolumeValue * Time.deltaTime;
-
+            _alarm.volume = Mathf.MoveTowards(_alarm.volume,target,_changeVolumeValue * Time.deltaTime);
+            
             yield return null;
         }
         
-        StopCoroutine(ChangeVolume());
+        if (_alarm.volume == _minVolume)
+            _alarm.Stop();
+            
+        StopCoroutine(_changeVolumeAlarm);
     }
 }
