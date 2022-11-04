@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class Alarm : MonoBehaviour
 {
@@ -15,9 +14,7 @@ public class Alarm : MonoBehaviour
     public void OnOffVolume()
     {
         if (_changeVolumeAlarm != null)
-        {
             StopCoroutine(_changeVolumeAlarm);
-        }
         
         if (_house.IsInfiltrated)
         {
