@@ -1,9 +1,10 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Alarm : MonoBehaviour
 {
-    [SerializeField] private AudioSource _alarm;
+    [SerializeField] private AudioSource _sound;
     [SerializeField] private House _house;
 
     private Coroutine _changeVolumeAlarm;
@@ -11,14 +12,14 @@ public class Alarm : MonoBehaviour
     private float _maxVolume = 1.0f;
     private float _minVolume = 0.0f;
 
-    public void OnOffVolume()
+    public void ControlCoroutine()
     {
         if (_changeVolumeAlarm != null)
             StopCoroutine(_changeVolumeAlarm);
         
         if (_house.IsInfiltrated)
         {
-            _alarm.Play();
+            _sound.Play();
             _changeVolumeAlarm = StartCoroutine(ChangeVolume(_maxVolume));
         }
         else
@@ -29,15 +30,15 @@ public class Alarm : MonoBehaviour
 
     private IEnumerator ChangeVolume(float target)
     {
-        while (_alarm.volume != target)
+        while (_sound.volume != target)
         {
-            _alarm.volume = Mathf.MoveTowards(_alarm.volume,target,_changeVolumeValue * Time.deltaTime);
+            _sound.volume = Mathf.MoveTowards(_sound.volume,target,_changeVolumeValue * Time.deltaTime);
             
             yield return null;
         }
         
-        if (_alarm.volume == _minVolume)
-            _alarm.Stop();
+        if (_sound.volume == _minVolume)
+            _sound.Stop();
             
         StopCoroutine(_changeVolumeAlarm);
     }
