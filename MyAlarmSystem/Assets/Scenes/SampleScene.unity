@@ -1848,7 +1848,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdc7df624e5e10848a655c0fe81ee308, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _alarm: {fileID: 1739278227}
+  _sound: {fileID: 1739278227}
   _house: {fileID: 1739278229}
 --- !u!114 &1739278229
 MonoBehaviour:
@@ -1867,7 +1867,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1739278228}
         m_TargetAssemblyTypeName: Alarm, Assembly-CSharp
-        m_MethodName: OnOffVolume
+        m_MethodName: ControlCoroutine
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
